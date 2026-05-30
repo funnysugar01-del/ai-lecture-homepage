@@ -598,14 +598,19 @@ h3 {
 .gallery {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  align-items: start;
   gap: 18px;
   padding-top: 0;
 }
 
 .gallery img {
+  display: block;
   width: 100%;
-  aspect-ratio: 1.25 / 1;
-  object-fit: cover;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  background: #f7f8fc;
+  border: 1px solid var(--line);
   border-radius: 8px;
 }
 
