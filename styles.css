@@ -733,6 +733,76 @@ textarea:focus {
   display: none;
 }
 
+.phone-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: none;
+  place-items: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, 0.46);
+}
+
+.phone-modal.is-open {
+  display: grid;
+}
+
+.phone-modal__panel {
+  position: relative;
+  width: min(420px, 100%);
+  padding: 28px;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+.phone-modal__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.phone-modal__panel h2 {
+  margin: 6px 0 10px;
+  font-size: 28px;
+}
+
+.phone-modal__panel p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.65;
+}
+
+.phone-modal__number {
+  display: block;
+  margin: 18px 0;
+  color: var(--ink);
+  font-size: 30px;
+  letter-spacing: 0;
+}
+
+.phone-modal__actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.phone-modal__note {
+  min-height: 24px;
+  padding-top: 12px;
+  font-size: 14px;
+}
+
 @media (max-width: 1040px) {
   .site-header {
     padding-left: 24px;

@@ -322,10 +322,65 @@ document.querySelectorAll("[data-track]").forEach((element) => {
 });
 
 document.querySelectorAll("[data-contact-phone]").forEach((element) => {
-  if (window.CONTACT_PHONE && window.CONTACT_PHONE !== "010-0000-0000") {
-    element.href = `tel:${window.CONTACT_PHONE.replaceAll("-", "")}`;
+  const phone = window.CONTACT_PHONE;
+  if (phone && phone !== "010-0000-0000") {
+    const telHref = `tel:${phone.replaceAll("-", "")}`;
+    const canCallDirectly =
+      /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) ||
+      (navigator.maxTouchPoints > 0 && window.matchMedia("(max-width: 820px)").matches);
+
+    element.href = canCallDirectly ? telHref : "#phone-contact";
+    element.addEventListener("click", (event) => {
+      if (canCallDirectly) return;
+      event.preventDefault();
+      openPhoneModal(phone);
+    });
   }
 });
+
+const openPhoneModal = (phone) => {
+  let modal = document.querySelector("[data-phone-modal]");
+
+  if (!modal) {
+    modal = document.createElement("div");
+    modal.className = "phone-modal";
+    modal.dataset.phoneModal = "";
+    modal.innerHTML = `
+      <div class="phone-modal__panel" role="dialog" aria-modal="true" aria-labelledby="phoneModalTitle">
+        <button class="phone-modal__close" type="button" aria-label="닫기">×</button>
+        <p class="eyebrow">Phone Contact</p>
+        <h2 id="phoneModalTitle">전화 문의</h2>
+        <p>PC에서는 아래 번호로 연락해 주세요. 모바일에서는 전화 버튼을 누르면 바로 연결됩니다.</p>
+        <strong class="phone-modal__number"></strong>
+        <div class="phone-modal__actions">
+          <button class="button primary" type="button" data-copy-phone>번호 복사</button>
+          <a class="button secondary light" href="#contact">문의 폼 작성</a>
+        </div>
+        <p class="phone-modal__note" aria-live="polite"></p>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal || event.target.closest(".phone-modal__close")) {
+        modal.classList.remove("is-open");
+      }
+    });
+
+    modal.querySelector("[data-copy-phone]").addEventListener("click", async () => {
+      const note = modal.querySelector(".phone-modal__note");
+      try {
+        await navigator.clipboard.writeText(phone);
+        note.textContent = "전화번호를 복사했습니다.";
+      } catch (error) {
+        note.textContent = "전화번호를 선택해 복사해 주세요.";
+      }
+    });
+  }
+
+  modal.querySelector(".phone-modal__number").textContent = phone;
+  modal.classList.add("is-open");
+};
 
 document.querySelectorAll("[data-kakao-link]").forEach((element) => {
   if (window.KAKAO_COUNSEL_URL && !window.KAKAO_COUNSEL_URL.includes("YOUR_KAKAO_LINK")) {
