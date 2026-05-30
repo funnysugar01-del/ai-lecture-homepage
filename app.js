@@ -355,7 +355,7 @@ document.getElementById("inquiryForm").addEventListener("submit", async (event) 
     organization,
   });
 
-  const mailto = `mailto:contact@example.com?subject=${encodeURIComponent(
+  const mailto = `mailto:funnysugar01@naver.com?subject=${encodeURIComponent(
     `${organization} ${topic} 문의`
   )}&body=${encodeURIComponent(summary)}`;
   window.location.href = mailto;
